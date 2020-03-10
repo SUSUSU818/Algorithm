@@ -1,0 +1,10 @@
+#include <iostream>
+#include <cstdio>
+using namespace std;
+
+FILE* fpr;
+errno_t errr = fopen_s(&fpr, "input.txt", "r");
+
+int main() {
+
+}
