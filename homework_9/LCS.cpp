@@ -14,7 +14,8 @@ void print(int i, int j) {
 		return;
 	}
 	if (B[i][j] == 3) {//两序列对应的值相等，输出X[i]，继续比较下一组
-		ans = ans.insert(0,1, X[i]);
+		ans = X[i] + ans;
+		//ans = ans.insert(0,1, X[i]);
 		print(i - 1, j - 1);
 	}
 	else if (B[i][j] == 1)//跳过一个x
