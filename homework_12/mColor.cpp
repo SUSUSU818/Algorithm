@@ -42,7 +42,8 @@ int main()
     while (fscanf_s(fpr,"%d %d", &a, &b) != EOF && a && b)
         graph[a][b] = graph[b][a] = 1;
     backtrack(1);
-    fprintf_s(fpw,"Total=%d", cnt);
+    if (cnt)fprintf_s(fpw, "Total=%d\n", cnt);
+    else fprintf_s(fpw, "NO\n");
     cout << "程序结束，请在output.txt中查看结果\n";
     return 0;
 }
