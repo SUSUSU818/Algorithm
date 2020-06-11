@@ -9,26 +9,26 @@ int N;
 double minlen = 10000, x[MAX_SIZE], r[MAX_SIZE];//分别为最小圆排列长度，每个圆心横坐标，每个圆半径
 double bestr[MAX_SIZE];//最小圆排列的半径顺序
 
+//计算圆心横坐标
 double center(int t)//得到每个圆的圆心坐标
 {
 	double temp = 0;
 	for (int j = 1; j < t; ++j)//因为目标圆有可能与排在它之前的任一圆相切，故需一一判断
 	{
 		double xvalue = x[j] + 2.0 * sqrt(r[t] * r[j]);
-		if (xvalue > temp)
-			temp = xvalue;
+		temp = min(xvalue, temp);
 	}
 	return temp;
 }
+
+//计算圆排列长度
 void compute()
 {
 	double low = 0, high = 0;
 	for (int i = 1; i < N; ++i)
 	{
-		if (x[i] - r[i] < low)
-			low = x[i] - r[i];
-		if (x[i] + r[i] > high)
-			high = x[i] + r[i];
+		low = min(low, x[i] - r[i]);
+		high = max(x[i] + r[i], high);
 	}
 	if (high - low < minlen)
 	{
@@ -37,11 +37,13 @@ void compute()
 			bestr[i] = r[i];
 	}
 }
+
+//回溯算法
 void backtrack(int t)
 {
 	if (t == N)
 	{
-		compute();
+		compute();//计算圆排列长度
 		return;
 	}
 	for (int j = t; j < N; ++j)
@@ -51,13 +53,14 @@ void backtrack(int t)
 		if (centerx + r[t] + r[1] < minlen)
 		{
 			x[t] = centerx;
-			backtrack(t + 1);
+			backtrack(t + 1);//到第t+1个圆
 		}
-		swap(r[t], r[j]);
+		swap(r[t], r[j]);//恢复状态
 	}
 }
 int main()
 {
+	//从input文件读入圆个数和圆半径
 	ifstream inFile;
 	inFile.open("input.txt");
 	inFile >> N;
@@ -65,6 +68,7 @@ int main()
 	for (int i = 1; i < N; i++)
 		inFile >> r[i];
 
+	//向output文件输出圆半径
 	ofstream outFile;
 	outFile.open("output.txt");
 	outFile << "每个圆的半径分别为：";
@@ -72,14 +76,16 @@ int main()
 		outFile << r[i] << ' ';
 	outFile << endl;
 
-	//回溯法求最短圆排列
+	//回溯法求最短圆排列长度
 	backtrack(1);
 
+	//向output文件输出结果
 	outFile << "最小圆排列长度为：" << minlen << endl;
 	outFile << "最优圆排列的顺序对应的半径分别为：";
 	for (int i = 1; i < N; ++i)
 		outFile<<bestr[i] << " ";
 
+	//屏幕提示
 	cout << "运行成功！\n请在output.txt文件中查看结果" << endl;
 	return 0;
 }
