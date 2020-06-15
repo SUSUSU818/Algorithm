@@ -16,7 +16,7 @@ double center(int t)//得到每个圆的圆心坐标
 	for (int j = 1; j < t; ++j)//因为目标圆有可能与排在它之前的任一圆相切，故需一一判断
 	{
 		double xvalue = x[j] + 2.0 * sqrt(r[t] * r[j]);
-		temp = min(xvalue, temp);
+		temp = max(xvalue, temp);
 	}
 	return temp;
 }
